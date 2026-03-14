@@ -14,7 +14,7 @@ project_root/
 ├── themes_data.csv             # Dataset for topic modeling
 └── sentiment_data.csv          # Dataset for sentiment/bias training
 
-Features
+## Features
 Multi-Format Support: Extracts text from .docx and .pdf files.
 
 Thematic Modeling: Uses Gensim's LDA with TF-IDF re-weighting to identify high-level historical themes.
@@ -24,7 +24,7 @@ Bias Classification: A trained Naive Bayes model to categorize text based on fre
 Smart Retrieval: Fuzzy search logic that handles spelling variations (e.g., "Nuremburg" vs "Nuremberg") and extracts key dates.
 
 
-Installation & Setup
+## Installation & Setup
 
 Install required dependencies:
 pip install pandas nltk gensim spacy pymupdf python-docx
