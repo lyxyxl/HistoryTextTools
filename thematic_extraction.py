@@ -20,7 +20,8 @@ def preprocess_text(docs):
     stop_words.update([
         'hitler', 'nazi', 'german', 'germany', 'also', 'could', 'would', 
         'power', 'people', 'party', 'able', 'many', 'set', 'make', 'use',
-        'result', 'impact', 'take', 'way', 'become', 'even', 'one'
+        'result', 'impact', 'take', 'way', 'become', 'even', 'one', 'nazi',
+        'nazis'
     ])
     
     processed = []
@@ -31,7 +32,7 @@ def preprocess_text(docs):
         # POS filtering: Focus on Nouns and Adjectives
         clean_tokens = [
             token.lemma_.lower() for token in nlp(text_clean) 
-            if token.pos_ in ["NOUN", "PROPN"]
+            if token.pos_ in ["NOUN", "PROPN", "ADJ"]
             and token.lemma_.lower() not in stop_words 
             and token.text not in string.punctuation 
             and len(token.text) > 2 
@@ -43,19 +44,19 @@ def preprocess_text(docs):
     bigram_mod = gensim.models.phrases.Phraser(bigram)
     return [bigram_mod[doc] for doc in processed]
 
-def run_topic_model(processed, num_topics=5):
+def run_topic_model(processed, num_topics):
     id2word = corpora.Dictionary(processed)
     
     # 3. Aggressive filtering: Ignore words in > 50% of documents
-    id2word.filter_extremes(no_below=2, no_above=0.35) 
+    id2word.filter_extremes(no_below=2, no_above=0.5) 
     
     corpus = [id2word.doc2bow(text) for text in processed]
     
-    tfidf = TfidfModel(corpus)
-    corpus_tfidf = tfidf[corpus]
+    # tfidf = TfidfModel(corpus)
+    # corpus_tfidf = tfidf[corpus]
 
     lda_model = gensim.models.ldamodel.LdaModel(
-        corpus=corpus_tfidf,
+        corpus=corpus,
         id2word=id2word,
         num_topics=num_topics, 
         random_state=1000,
@@ -75,12 +76,16 @@ if __name__ == "__main__":
     
     clean_docs = preprocess_text(df[TEXT_COLUMN].astype(str).tolist())
     
-    # Try 3 topics for better clarity on 28 documents
-    lda_model, corpus, id2word = run_topic_model(clean_docs, num_topics=3)
+    num_topics = 5
+    lda_model, corpus, id2word = run_topic_model(clean_docs, num_topics)
 
-    print("\n--- Refined Themes (3 Topics) ---")
-    for idx, topic in lda_model.print_topics(-1):
-        print(f"Topic {idx}: {topic}")
+    print("\n--- Refined Themes ---")
+
+    for idx, topic in lda_model.show_topics(num_topics=-1, formatted=False):
+        words = [word.replace("_", " ") for word, prob in topic]  
+        
+        print(f"\nTopic {idx}")
+        print(f"Keywords: {', '.join(words[:6])}")
         
     coherence_model_lda = CoherenceModel(model=lda_model, texts=clean_docs, dictionary=id2word, coherence='c_v')
     print(f'\nCoherence Score: {coherence_model_lda.get_coherence():.4f}')

@@ -43,13 +43,24 @@ while True:
         break
     
     features = extract_features(user_input)
-    prediction = classifier.classify(features)
-
+    # 1. Get the probability distribution instead of just the label
     dist = classifier.prob_classify(features)
+    prediction = dist.max()
     confidence = dist.prob(prediction)
     
-    if prediction == "Opinion":
-        sentiment = get_sentiment(user_input)
-        print(f"Result: {prediction.upper()} ({sentiment.upper()}) ({confidence:.1%} confidence)")
+    # 2. Apply the Threshold Logic
+    # If the model thinks it's an Opinion but isn't very sure (e.g., < 80%), 
+    # we treat it as a factual/Neutral statement for safety.
+    if prediction == "Opinion" and confidence < 0.80:
+        final_prediction = "Neutral"
     else:
-        print(f"Result: {prediction.upper()} ({confidence:.1%} confidence)")
+        final_prediction = prediction
+
+    # 3. Print results based on the FINAL decision
+    if final_prediction == "Opinion":
+        sentiment = get_sentiment(user_input)
+        print(f"Result: {final_prediction.upper()} ({sentiment.upper()}) ({confidence:.1%} confidence)")
+    else:
+        # Note: If we overrode the label, we still show the original confidence 
+        # to help you understand why the filter triggered.
+        print(f"Result: {final_prediction.upper()} ({confidence:.1%} confidence)")
