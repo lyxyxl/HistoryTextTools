@@ -1,42 +1,106 @@
-URECA Research Project
+# HistoryTextTools: NTU URECA Research Project
 
-This project provides a pipeline for analyzing historical text data (exam papers, notes, and archives) related to Nazi Germany. It uses Latent Dirichlet Allocation (LDA) for thematic extraction and a Naive Bayes Classifier to identify linguistic biases or classifications.
+An advanced Natural Language Processing (NLP) pipeline designed to analyze historical examination papers, extract long-term thematic trends, detect latent biases, and enable robust semantic retrieval across multi-format academic documents. 
 
-## Project Structure
+This repository houses the core text-mining tools developed under the **Undergraduate Research Experience on CAmpus (URECA)** program.
 
-project_root/
-│
-├── src/                        # Saved model files (.pickle, .model, .dict)
-├── data/                       # Subfolder for raw CSV data
-├── thematic_trainer.py         # Script to train the LDA Topic Model
-├── sentiment_trainer.py        # Script to train the Naive Bayes Classifier
-├── search_tool.py              # Multi-document fuzzy search & retrieval engine
-├── themes_data.csv             # Dataset for topic modeling
-└── sentiment_data.csv          # Dataset for sentiment/bias training
+---
 
-## Features
-Multi-Format Support: Extracts text from .docx and .pdf files.
+## 🚀 Project Overview
 
-Thematic Modeling: Uses Gensim's LDA with TF-IDF re-weighting to identify high-level historical themes.
+Analyzing qualitative historical data at scale presents unique challenges due to varying linguistic architectures, multi-format text sources, and the necessity for granular semantic precision. This project addresses these hurdles by building a robust Python-based NLP pipeline tailored for historical and educational research. 
 
-Bias Classification: A trained Naive Bayes model to categorize text based on frequent word features.
+By employing specialized linguistic heuristics and advanced machine learning models, the system converts unstructured historical exam papers into structured, quantifiable insights—enhancing academic rigor and workflow reproducibility.
 
-Smart Retrieval: Fuzzy search logic that handles spelling variations (e.g., "Nuremburg" vs "Nuremberg") and extracts key dates.
+### Core Features & Models
+The toolkit is divided into three specialized, standalone NLP components:
+1. **Thematic Extraction Engine (Topic Modeling):** Built on Latent Dirichlet Allocation (LDA) via `Gensim` to discover recurring themes, shifts in educational focus, and conceptual evolution over historical timelines.
+2. **Sentiment & Bias Analysis Module:** Utilizes custom linguistic heuristics alongside `NLTK` and `spaCy` to map underlying sentiments, tones, and institutional biases embedded within historical questioning.
+3. **Fuzzy Semantic Search Engine:** A cross-document information retrieval system that matches concepts rather than just exact keywords, ensuring highly relevant search capability across diverse document formats.
 
+---
 
-## Installation & Setup
+## 🛠️ Tech Stack & Dependencies
 
-Install required dependencies:
-pip install pandas nltk gensim spacy pymupdf python-docx
-python -m spacy download en_core_web_sm
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')"
+The pipeline is built purely in Python and relies on industry-standard libraries for linguistic engineering, text processing, and statistical modeling:
 
-Usage
-1. Training the Thematic Model
-Run this to generate topics from your history corpus.
-python thematic_trainer.py
+* **Core NLP Frameworks:** `spaCy` (advanced tokenization, POS tagging, named entity recognition), `NLTK` (text cleaning, stop-word filtering, sentiment scoring).
+* **Topic Modeling:** `Gensim` (dictionary mapping, LDA model building, coherence scoring).
+* **Data Structures & Analytics:** `Pandas`, `NumPy` (high-performance tabular data extraction and matrix operations).
 
-3. Training the Sentiment/Bias Model
-This script processes sentiment_data.csv and saves the resulting classifier into the src/ folder.
+---
 
-python sentiment_trainer.py
+## 📁 Repository Structure
+
+```text
+├── data/                   # Input directory for raw historical texts & exam papers
+├── src/                    # Source code for the NLP pipeline
+│   ├── preprocessing.py    # Custom linguistic cleaning, lemmatization, & tokenization
+│   ├── topic_modeling.py   # Thematic Extraction Engine (LDA)
+│   ├── sentiment_analysis.py # Tone, sentiment, and bias analysis module
+│   └── semantic_search.py  # Fuzzy semantic search and retrieval system
+├── notebooks/              # Jupyter Notebooks for exploratory data analysis (EDA)
+├── requirements.txt        # Python dependency manifest
+└── README.md               # Project documentation
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+Ensure you have Python 3.10+ installed on your system.
+
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com/lyxyxl/HistoryTextTools.git](https://github.com/lyxyxl/HistoryTextTools.git)
+   cd HistoryTextTools
+
+2. **Create and Activate a Virtual Environment:**
+   ```bash
+   # On macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+
+   # On Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+
+3. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+
+4. **Download Required Language Models:**
+   The pipeline requires specific linguistic corpora from `spaCy` and `NLTK`. Download them by running:
+   ```bash
+   python -m spacy download en_core_web_sm
+   python -c "import nltk; nltk.download('vader_lexicon'); nltk.download('stopwords')"
+
+---
+
+## 📖 Usage Guide
+
+1. **Data Preparation**
+   Place your raw text documents or structured text inputs into the `data/` folder. The pipeline expects unformatted or semi-formatted historical examination logs.
+
+2. **Preprocessing Data**
+  Before running any analysis, clean and parse the historical text:
+  ```bash
+  python src/preprocessing.py --input data/raw_exams.csv --output data/cleaned_exams.pkl
+  ```
+
+3. **Training the Thematic Extraction Engine (LDA)**
+   To extract key historical themes and optimize them using topic coherence scores:
+   ```bash
+   python src/topic_modeling.py --num_topics 5 --passes 20
+
+4. **Running Sentiment & Bias Detection**
+   Running Sentiment & Bias Detection
+   ```bash
+   python src/sentiment_analysis.py --input data/cleaned_exams.pkl
+
+5. **Executing Semantic Fuzzy Queries**
+   To search across multi-format documents using the conceptual/semantic lookup tool:
+   ```bash
+   python src/semantic_search.py --query "colonial policy evaluation"
+
+---
