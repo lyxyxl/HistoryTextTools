@@ -14,9 +14,9 @@ By employing specialized linguistic heuristics and advanced machine learning mod
 
 ### Core Features & Models
 The toolkit is divided into three specialized, standalone NLP components:
-1. **Thematic Extraction Engine (Topic Modeling):** Built on Latent Dirichlet Allocation (LDA) via `Gensim` to discover recurring themes, shifts in educational focus, and conceptual evolution over historical timelines.
-2. **Sentiment & Bias Analysis Module:** Utilizes custom linguistic heuristics alongside `NLTK` and `spaCy` to map underlying sentiments, tones, and institutional biases embedded within historical questioning.
-3. **Fuzzy Semantic Search Engine:** A cross-document information retrieval system that matches concepts rather than just exact keywords, ensuring highly relevant search capability across diverse document formats.
+1. **Sentiment & Bias Analysis Module:** Utilizes custom linguistic heuristics alongside `NLTK` and `spaCy` to map underlying sentiments, tones, and institutional biases embedded within historical questioning.
+2. **Fuzzy Semantic Search Engine:** A cross-document information retrieval system that matches concepts rather than just exact keywords, ensuring highly relevant search capability across diverse document formats.
+3. **Thematic Extraction Engine (Topic Modeling):** Built on Latent Dirichlet Allocation (LDA) via `Gensim` to discover recurring themes, shifts in educational focus, and conceptual evolution over historical timelines.
 
 ---
 
